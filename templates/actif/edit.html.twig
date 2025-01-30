@@ -1,0 +1,37 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}Modifier un Actif{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="mb-4">Modifier un Actif</h2>
+
+    
+    {% for label, messages in app.flashes %}
+        <div class="alert alert-{{ label }}">
+            {{ messages|join(', ') }}
+        </div>
+    {% endfor %}
+
+    <div class="card shadow p-4">
+        <h5 class="mb-3">Informations de l'Actif</h5>
+
+    
+        {{ form_start(form) }}
+            <div class="row">
+                <div class="col-md-6">{{ form_row(form.nom) }}</div>
+                <div class="col-md-6">{{ form_row(form.numSerie) }}</div>
+                <div class="col-md-6">{{ form_row(form.type) }}</div>
+                <div class="col-md-6">{{ form_row(form.etat) }}</div>
+                <div class="col-md-6">{{ form_row(form.userAssigned) }} </div>
+                <div class="col-md-6">{{ form_row(form.dateAcquisation) }}</div>
+            </div>
+            
+            <div class="mt-3">
+                <button type="submit" class="btn btn-success">Modifier</button>
+                <a href="{{ path('all_actif') }}" class="btn btn-secondary">Annuler</a>
+            </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}
