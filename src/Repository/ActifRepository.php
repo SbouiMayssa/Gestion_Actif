@@ -31,6 +31,8 @@ class ActifRepository extends ServiceEntityRepository
      {
          return $this->createQueryBuilder('a')
              ->where('a.numSerie LIKE :numSerie')
+             ->andWhere('a.etat = :etat')
+             ->setParameter('etat', 'en panne')
              ->setParameter('numSerie', '%' . $numSerie . '%')
              ->getQuery()
              ->getResult();

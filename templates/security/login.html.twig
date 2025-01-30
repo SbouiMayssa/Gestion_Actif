@@ -1,6 +1,4 @@
-{% extends 'template.html.twig' %}
-
-{% block title %}Log in!{% endblock %}
+{% extends 'templateLogin.html.twig' %}
 
 {% block body %}
     <div class="container">
@@ -9,7 +7,9 @@
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image">
+                                <img class="bg-login-image1"  src="{{ asset('assets/img/undraw_posting_photo.svg') }}" alt="">
+                            </div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">

@@ -21,9 +21,9 @@ final class TechnicienController extends AbstractController
     #[Route('', name: 'actif')]
     public function index(ActifRepository $actifRepository): Response
     {
-        //$actifs = $actifRepository->findActifsEnPanne();
-        return $this->render('technicien/index.html.twig', [
-            //'actifs' => $actifs,
+        $actifs = $actifRepository->findActifsEnPanne();
+        return $this->render('technicien/ActifPanne.html.twig', [
+            'actifs' => $actifs,
         ]);
     }  
 
@@ -51,29 +51,38 @@ final class TechnicienController extends AbstractController
             $this->addFlash('success', "L'état de l'actif a été mis à jour avec succès.");
         }
 
-        return $this->redirectToRoute('actif_panne');
+        return $this->redirectToRoute('search_actif');
     }
+
+
 
 
 
 
     #[Route('/search', name: 'search_actif', methods: ['GET'])]
     public function SearchActif(Request $request, ActifRepository $actifRepository): Response
-{
-    $query = $request->query->get('q', ''); 
-    $actifs = [];
+    {
+        $query = $request->query->get('q', '');
 
-    if (!empty($query)) {
-        $actifs = $actifRepository->searchByNumSerie($query); 
+        if (empty($query)) {
+            // si le field input est vide
+            $actifs = $actifRepository->findActifsEnPanne();
+        } else {
+            // si vous avez saisir le num de serie
+            $actifs = $actifRepository->searchByNumSerie($query);
+        }
+
+        return $this->render('technicien/SearchActif.html.twig', [
+            'actifs' => $actifs,
+            'query' => '',
+        ]);
     }
 
-    return $this->render('technicien/SearchActif.html.twig', [
-        'actifs' => $actifs,
-        'query' => $query,
-    ]);
-}
 
-  
+
+
+
+
     #[Route('/sort/{criteria}', name: 'actif_sort', methods: ['GET'])]
     public function sort(string $criteria, ActifRepository $actifRepository): Response
     {

@@ -1,10 +1,10 @@
-{% extends 'template.html.twig' %}
+{% extends 'templatetech.html.twig' %}
 
 {% block title %}Actifs triés{% endblock %}
 
 {% block body %}
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Liste des Actifs</h1>
+    <h1 class="text-center mb-4">Trier les Actifs</h1>
 
     <!-- Barre de sélection de tri -->
     <div class="mb-4 text-center">
@@ -47,13 +47,35 @@
                             </p>
                             <p class="card-text"><strong>Numéro de série :</strong> {{ actif.numSerie }}</p>
                             <p class="card-text"><strong>Date d'Acquisition :</strong> {{ actif.dateAcquisation|date('d/m/Y') }}</p>
-                            
-                            <div class="d-flex justify-content-between">
-                                <a href="{{ path('actif_edit', {'id': actif.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
-                                <form method="post" action="{{ path('actif_delete', {'id': actif.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cet actif ?');">
-                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ actif.id) }}">
-                                    
-                                </form>
+
+                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal{{ actif.id }}">
+                                <i class="bi bi-pencil-square"></i> Modifier l'État
+                            </button>
+
+                            <!-- Modal pour mise à jour de l'état -->
+                            <div class="modal fade" id="updateModal{{ actif.id }}" tabindex="-1" aria-labelledby="updateModalLabel{{ actif.id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="updateModalLabel{{ actif.id }}">Modifier l'État de {{ actif.nom }}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" action="{{ path('update_etat', {'id': actif.id}) }}">
+                                                <div class="mb-3">
+                                                    <label for="etat" class="form-label">Nouvel État :</label>
+                                                    <select name="etat" id="etat" class="form-select">
+                                                        <option value="fonctionnel">Fonctionnel</option>
+                                                        <option value="remplacé">Remplacé</option>
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-success w-100">
+                                                    <i class="bi bi-check-circle"></i> Confirmer
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

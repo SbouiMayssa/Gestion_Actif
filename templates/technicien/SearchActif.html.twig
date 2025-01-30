@@ -1,4 +1,4 @@
-{% extends 'template.html.twig' %}
+{% extends 'templatetech.html.twig' %}
 
 {% block title %}Recherche d'Actif{% endblock %}
 
@@ -9,7 +9,8 @@
     <!-- Barre de recherche -->
     <form method="get" action="{{ path('search_actif') }}" class="mb-4">
         <div class="input-group">
-            <input type="text" name="q" class="form-control" placeholder="Rechercher par numéro de série..." value="{{ query }}">
+            <input type="text" name="q" class="form-control" placeholder="Rechercher par numéro de série..." value="">
+
             <button class="btn btn-primary" type="submit">
                 <i class="bi bi-search"></i> Rechercher
             </button>
@@ -34,30 +35,42 @@
                                 {% endif %}
                             </h5>
                             <p class="card-text"><strong>Type :</strong> {{ actif.type }}</p>
-                            <p class="card-text"><strong>État :</strong> 
-                                {% if actif.etat == 'en panne' %}
-                                    <span class="badge bg-danger text-white px-3 py-2 rounded-pill">
-                                        <i class="bi bi-exclamation-triangle-fill"></i> En Panne
-                                    </span>
-                                {% elseif actif.etat == 'fonctionnel' %}
-                                    <span class="badge bg-success text-white px-3 py-2 rounded-pill">
-                                        <i class="bi bi-check-circle-fill"></i> Fonctionnel
-                                    </span>
-                                {% elseif actif.etat == 'remplacé' %}
-                                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">
-                                        <i class="bi bi-arrow-repeat"></i> Remplacé
-                                    </span>
-                                {% endif %}
+                            <p class="card-text"><strong>État :</strong>
+                                <span class="badge bg-danger text-white px-3 py-2 rounded-pill">
+                                    <i class="bi bi-exclamation-triangle-fill"></i> En Panne
+                                </span>
                             </p>
                             <p class="card-text"><strong>Numéro de série :</strong> {{ actif.numSerie }}</p>
                             <p class="card-text"><strong>Date d'Acquisition :</strong> {{ actif.dateAcquisation|date('d/m/Y') }}</p>
-                            
-                            <div class="d-flex justify-content-between">
-                                <a href="{{ path('actif_edit', {'id': actif.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
-                                <form method="post" action="{{ path('actif_delete', {'id': actif.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cet actif ?');">
-                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ actif.id) }}">
-                                    <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
-                                </form>
+
+                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal{{ actif.id }}">
+                                <i class="bi bi-pencil-square"></i> Modifier l'État
+                            </button>
+
+                            <!-- Modal pour mise à jour de l'état -->
+                            <div class="modal fade" id="updateModal{{ actif.id }}" tabindex="-1" aria-labelledby="updateModalLabel{{ actif.id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="updateModalLabel{{ actif.id }}">Modifier l'État de {{ actif.nom }}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" action="{{ path('update_etat', {'id': actif.id}) }}">
+                                                <div class="mb-3">
+                                                    <label for="etat" class="form-label">Nouvel État :</label>
+                                                    <select name="etat" id="etat" class="form-select">
+                                                        <option value="fonctionnel">Fonctionnel</option>
+                                                        <option value="remplacé">Remplacé</option>
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-success w-100">
+                                                    <i class="bi bi-check-circle"></i> Confirmer
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
