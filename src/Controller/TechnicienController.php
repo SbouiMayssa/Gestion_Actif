@@ -22,7 +22,7 @@ final class TechnicienController extends AbstractController
     public function index(ActifRepository $actifRepository): Response
     {
         $actifs = $actifRepository->findActifsEnPanne();
-        return $this->render('technicien/ActifPanne.html.twig', [
+        return $this->render('technicien/SearchActif.html.twig', [
             'actifs' => $actifs,
         ]);
     }  
@@ -104,15 +104,7 @@ final class TechnicienController extends AbstractController
 
 
 
-#[Route('/filter/{etat}', name: 'actif_filter', methods: ['GET'])]
-public function filter(string $etat, ActifRepository $actifRepository): Response
-{
-    $actifs = $actifRepository->filterByEtat($etat); 
 
-    return $this->render('technicien/filter.html.twig', [
-        'actifs' => $actifs,
-    ]);
-}
 
 
 

@@ -1,10 +1,12 @@
 {% extends 'templatetech.html.twig' %}
 
-{% block title %}Recherche d'Actif{% endblock %}
+{% block pageName %}
+    <title>Liste des actifs</title>
+{% endblock %}
 
 {% block body %}
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Recherche d'un Actif</h1>
+    <h1 class="text-center mb-4">Rechercher un Actif</h1>
 
     <!-- Barre de recherche -->
     <form method="get" action="{{ path('search_actif') }}" class="mb-4">

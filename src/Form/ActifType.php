@@ -82,10 +82,7 @@ class ActifType extends AbstractType
                     ])
                 ]
             ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Ajouter',
-                'attr' => ['class' => 'btn btn-primary']
-            ])
+
 
             ->add('userAssigned', EntityType::class, [
                 'class' => Employer::class,

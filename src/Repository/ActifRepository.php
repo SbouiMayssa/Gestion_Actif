@@ -37,10 +37,20 @@ class ActifRepository extends ServiceEntityRepository
              ->getQuery()
              ->getResult();
      }
-     
-     
- 
-     //  Obtenir les actifs en panne
+
+    public function searchByNumSerieActif(string $numSerie): array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.numSerie LIKE :numSerie')
+            ->setParameter('numSerie', '%' . $numSerie . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
+
+    //  Obtenir les actifs en panne
      public function findActifsEnPanne(): array
      {
          return $this->createQueryBuilder('a')

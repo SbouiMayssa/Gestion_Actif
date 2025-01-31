@@ -1,55 +1,50 @@
 {% extends 'templateLogin.html.twig' %}
 
+{% block pageName %}
+    <title> Page Login</title>
+{% endblock %}
+
 {% block body %}
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-xl-10 col-lg-12 col-md-9">
+    <div class="container h-100">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-xl-5 col-lg-6 col-md-8 mx-auto"> <!-- Centered Column -->
                 <div class="card o-hidden border-0 shadow-lg my-5">
-                    <div class="card-body p-0">
-                        <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image">
-                                <img class="bg-login-image1"  src="{{ asset('assets/img/undraw_posting_photo.svg') }}" alt="">
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="p-5">
-                                    <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
-                                    </div>
-
-                                    {% if error %}
-                                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                                    {% endif %}
-
-                                    {% if app.user %}
-                                        <div class="mb-3 text-center">
-                                            You are logged in as <strong>{{ app.user.userIdentifier }}</strong>, 
-                                            <a href="{{ path('app_logout') }}" class="text-danger">Logout</a>
-                                        </div>
-                                    {% else %}
-                                        <form method="post" class="user">
-                                            <div class="form-group">
-                                                <input type="email" value="{{ last_username }}" name="email" id="exampleInputEmail" 
-                                                    class="form-control form-control-user" placeholder="Enter Email Address..." 
-                                                    autocomplete="email" required autofocus>
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="password" name="password" id="exampleInputPassword" 
-                                                    class="form-control form-control-user" placeholder="Password" 
-                                                    autocomplete="current-password" required>
-                                            </div>
-                                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                                            
-                                            <button class="btn btn-primary btn-user btn-block" type="submit">Login</button>
-                                        </form>
-
-                                        <hr>
-                                        <div class="text-center">
-                                            <a href="{{ path('app_register') }}" class="btn btn-link">Créer un compte</a>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            </div>
+                    <div class="card-body p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">Bienvenue!</h1>
                         </div>
+                        {% if error %}
+                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                        {% endif %}
+
+                        {% if app.user %}
+                            <div class="mb-3 text-center">
+                                Vous êtes connecté en tant que <strong>{{ app.user.userIdentifier }}</strong>,
+                                <a href="{{ path('app_logout') }}" class="text-danger">Déconnexion</a>
+                            </div>
+                        {% else %}
+                            <form method="post" class="user">
+                                <div class="form-group">
+                                    <input type="email" value="{{ last_username }}" name="email" id="exampleInputEmail"
+                                        class="form-control form-control-user" placeholder="Entez Votre Adresse E-mail..."
+                                        autocomplete="email" required autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" name="password" id="exampleInputPassword"
+                                        class="form-control form-control-user" placeholder="Mot de passe"
+                                        autocomplete="current-password" required>
+                                </div>
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                                <button class="btn btn-primary btn-user btn-block" type="submit">Login</button>
+                            </form>
+
+                            <hr>
+                            <div class="text-center">
+                                <a href="{{ path('app_register') }}" class="btn btn-link">Créer un compte</a>
+                            </div>
+                        {% endif %}
+
                     </div>
                 </div>
             </div>

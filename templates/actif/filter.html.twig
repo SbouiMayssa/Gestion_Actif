@@ -1,25 +1,19 @@
 {% extends 'template.html.twig' %}
 
 {% block pageName %}
-    <title>Liste des actifs</title>
+    <title>Filtrer les actifs</title>
 {% endblock %}
 
 {% block body %}
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Rechercher un Actif</h1>
+        <h1 class="text-center mb-4">Filtrer les Actifs</h1>
 
-        <!-- Barre de recherche -->
-        <form method="get" action="{{ path('actif_s') }}" class="mb-4">
-            <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="Rechercher par numéro de série..." value="">
 
-                <button class="btn btn-primary" type="submit">
-                    <i class="bi bi-search"></i> Rechercher
-                </button>
-            </div>
-        </form>
-
-        <!-- Résultats de la recherche -->
+        <div class="mb-4 text-center">
+            <a href="{{ path('actif_filter', {'etat': 'fonctionnel'}) }}" class="btn btn-outline-primary mx-2">Filter par fonctionnel</a>
+            <a href="{{ path('actif_filter', {'etat': 'en panne'}) }}" class="btn btn-outline-primary mx-2">Filter par en panne</a>
+            <a href="{{ path('actif_filter', {'etat': 'remplacé'}) }}" class="btn btn-outline-primary mx-2">Filter par remplacé</a>
+        </div>
         <div class="row">
             {% if actifs is not empty %}
                 {% for actif in actifs %}
@@ -40,16 +34,16 @@
                                 <p class="card-text"><strong>État :</strong>
                                     {% if actif.etat == 'en panne' %}
                                         <span class="badge bg-danger text-white px-3 py-2 rounded-pill">
-                                    <i class="bi bi-exclamation-triangle-fill"></i> En Panne
-                                </span>
+                                        <i class="bi bi-exclamation-triangle-fill"></i> En Panne
+                                    </span>
                                     {% elseif actif.etat == 'fonctionnel' %}
                                         <span class="badge bg-success text-white px-3 py-2 rounded-pill">
-                                    <i class="bi bi-check-circle-fill"></i> Fonctionnel
-                                </span>
+                                        <i class="bi bi-check-circle-fill"></i> Fonctionnel
+                                    </span>
                                     {% elseif actif.etat == 'remplacé' %}
                                         <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">
                                         <i class="bi bi-arrow-repeat"></i> Remplacé
-                                </span>
+                                    </span>
                                     {% endif %}
                                 </p>
                                 <p class="card-text"><strong>Numéro de série :</strong> {{ actif.numSerie }}</p>
@@ -57,7 +51,6 @@
 
                                 <div class="d-flex justify-content-between">
                                     <a href="{{ path('actif_edit', {'id': actif.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
-
                                     <form method="post" action="{{ path('actif_delete', {'id': actif.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cet actif ?');">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ actif.id) }}">
                                         <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
@@ -69,7 +62,7 @@
                 {% endfor %}
             {% else %}
                 <div class="col-12 text-center">
-                    <p class="text-muted">Aucun actif trouvé pour "<strong>{{ query }}</strong>".</p>
+                    <p class="text-muted">Aucun actif trouvé.</p>
                 </div>
             {% endif %}
         </div>

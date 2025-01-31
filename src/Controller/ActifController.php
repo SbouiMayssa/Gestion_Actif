@@ -28,26 +28,29 @@ final class ActifController extends AbstractController
 
 
 
-    #[Route('/actif/add',name:'add_actif')]
-    public function AddAsset(EntityManagerInterface $manager,Request $request){
-        $actif=new Actif();
-        $form=$this->createForm(ActifType::class,$actif);
+    #[Route('/actif/add', name:'add_actif')]
+    public function AddAsset(EntityManagerInterface $manager, Request $request){
+        $actif = new Actif();
+        $form = $this->createForm(ActifType::class, $actif);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $actif->setCreatedBy($this->getUser());
             $manager->persist($actif);
             $manager->flush();
-            
-            $this->addFlash('success',"Actif est ajouté avec succés ");
+
+            $this->addFlash('success', "L'actif est ajouté avec succès");
             return $this->redirectToRoute('all_actif');
         }
-        return $this->render('actif/add.html.twig',[
-            'form'=>$form->createView(),
+
+        return $this->render('actif/add.html.twig', [
+            'form' => $form->createView(),
+            'action' => 'Ajouter',
         ]);
     }
-   
- #[Route('/actif/sort/{criteria}', name: 'sort_actif', methods: ['GET'])]
+
+
+    #[Route('/actif/sort/{criteria}', name: 'sort_actif', methods: ['GET'])]
     public function sort(string $criteria, ActifRepository $actifRepository): Response
     {
          switch ($criteria) {
@@ -65,36 +68,36 @@ final class ActifController extends AbstractController
                 'actifs' => $actifs,
             ]);
         }
-    
-    
 
-   #[Route('/actif/edit/{id<\d+>}',name:'actif_edit')]
-   public function editActif(EntityManagerInterface $manager,Request $request,Actif $actif,$id,Security $security){
 
-        if($actif->getDeletedAt()!== null) {
+
+    #[Route('/actif/edit/{id<\d+>}', name:'actif_edit')]
+    public function editActif(EntityManagerInterface $manager, Request $request, Actif $actif, $id, Security $security){
+        if ($actif->getDeletedAt() !== null) {
             $this->addFlash('error', "L'actif $id est archivé et ne peut pas être modifié.");
             return $this->redirectToRoute('all_actif');
         }
 
-        $form=$this->createForm(ActifType::class,$actif);
+        $form = $this->createForm(ActifType::class, $actif);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager->persist($actif);
             $manager->flush();
 
-            $this->addFlash('success',"l' actif de $id est modifié avec succés");
-            return $this->redirectToRoute('all_actif'); 
+            $this->addFlash('success', "L'actif de $id est modifié avec succès");
+            return $this->redirectToRoute('all_actif');
         }
+
         return $this->render('actif/edit.html.twig', [
             'form' => $form->createView(),
             'actif' => $actif,
-           
-        ]);  
-   }
-  
+            'action' => 'Modifier',
+        ]);
+    }
 
-#[Route('/actif/delete/{id}', name: 'actif_delete')]
+
+    #[Route('/actif/delete/{id}', name: 'actif_delete')]
 public function delete(Actif $actif, ActifRepository $actifRepository,$id,EntityManagerInterface $manager): Response
 {
 
@@ -113,27 +116,30 @@ public function delete(Actif $actif, ActifRepository $actifRepository,$id,Entity
 }
 
 
- #[Route('/actif/search', name: 'search_actif', methods: ['GET'])]
-    public function SearchActif(Request $request, ActifRepository $actifRepository): Response{
-    
-    
-    $query = $request->query->get('q', '');
-    $actifs = [];
-    if (!empty($query)) {
-        $actifs = $actifRepository->searchByNumSerie($query); 
+    #[Route('/actif/search', name: 'actif_s', methods: ['GET'])]
+    public function SearchActif(Request $request, ActifRepository $actifRepository): Response
+    {
+        $query = $request->query->get('q', '');
+        $actifs = []; // Ajoutez cela pour initialiser la variable
+
+        if (!empty($query)) {
+            $actifs = $actifRepository->searchByNumSerieActif($query);
+        }
+
+        return $this->render('actif/searchActif.html.twig', [
+            'actifs' => $actifs,
+            'query' => $query, // Assurez-vous de transmettre la valeur de la recherche
+        ]);
     }
 
-    return $this->render('admin/SearchActif.html.twig', [
-        'actifs' => $actifs,
-        'query' => $query,
-    ]);
-}
 
+    #[Route('/filter/{etat}', name: 'actif_filter', methods: ['GET'])]
+    public function filter(string $etat, ActifRepository $actifRepository): Response
+    {
+        $actifs = $actifRepository->findByEtat($etat);
 
-
-
-
-
-  
-
+        return $this->render('actif/filter.html.twig', [
+            'actifs' => $actifs,
+        ]);
+    }
 }

@@ -1,6 +1,8 @@
 {% extends 'template.html.twig' %}
 
-{% block title %}Modifier un Actif{% endblock %}
+{% block pageName %}
+    <title>Modifier un actif</title>
+{% endblock %}
 
 {% block body %}
 <div class="container mt-5">
@@ -26,11 +28,9 @@
                 <div class="col-md-6">{{ form_row(form.userAssigned) }} </div>
                 <div class="col-md-6">{{ form_row(form.dateAcquisation) }}</div>
             </div>
-            
-            <div class="mt-3">
-                <button type="submit" class="btn btn-success">Modifier</button>
-                <a href="{{ path('all_actif') }}" class="btn btn-secondary">Annuler</a>
-            </div>
+        <button type="submit" class="btn btn-primary">
+            {{ action }} <!-- This will display either "Modifier" or "Ajouter" based on the action -->
+        </button>
         {{ form_end(form) }}
     </div>
 </div>
