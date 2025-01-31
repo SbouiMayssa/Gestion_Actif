@@ -50,7 +50,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item">
-            <a class="nav-link" href="{{ path('all_actif') }}">
+            <a class="nav-link" href="{{ path('search_actif') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Liste des actifs</span></a>
         </li>
@@ -73,7 +73,7 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Gestion des actifs:</h6>
-                    <a class="collapse-item" href="{{ path('search_actif', {'criteria': 'type'}) }}">Lister les actifs</a>
+
                     <a class="collapse-item" href="{{ path('actif_sort', {'criteria': 'type'}) }}">Trier les actifs</a>
                 </div>
             </div>
